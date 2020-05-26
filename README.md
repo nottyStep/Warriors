@@ -7,3 +7,7 @@ The game is based upon the Warriors book series written by Erin Hunter. All in-g
 depth. Future versions would add an aspect of decision for which medicines to be used for each type of warrior injury 
 encountered. As it stands, warriors are healed if the appropriate medicine is present in the inventory. An additional 
 possibility would be to add some form of learning, math, spelling, to complete healing procedures.
+
+If downloading, all .jpg files should be placed in a directory called 'images'
+
+pyfiglet, termcolor, matplotlib, and colorama all need to be installed
