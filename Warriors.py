@@ -1,10 +1,10 @@
 import random
-import sys
-import matplotlib.pyplot as plt
-from colorama import init
+import sys  # for ASCII art
+import matplotlib.pyplot as plt  # for image display
+from colorama import init  # for the ASCII art
 init(strip=not sys.stdout.isatty())  # strip colors if stdout is redirected
-from termcolor import cprint, colored
-from pyfiglet import figlet_format
+from termcolor import cprint, colored  # for the ASCII art
+from pyfiglet import figlet_format  # for the ASCII art
 
 MEDICINE_CATS = 'medicine_cats.txt'
 FORAGEABLE_ITEMS = 'forageable_items.txt'
@@ -20,21 +20,19 @@ SPOTTEDLEAF = 'images/Spottedleaf.jpg'
 
 
 def main():
-    # cprint(figlet_format('WARRIORS!', font='standard'), 'yellow', 'on_red', attrs=['bold'])
     cprint(figlet_format('WARRIORS!', font='catwalk', width=100), 'cyan', attrs=['bold'])
     cprint(figlet_format('Medicine Cat', font='standard'), 'yellow', attrs=['bold'])
     display_introduction()
     display_medicine_cats()
     medicine_cats = make_file_list(MEDICINE_CATS)
-    # print(medicine_cats)
     medicine_cat = inputNumber("Which cat would you like to be?: ")
-    medicine_cat -= 1
-    # print((len(medicine_cats)-1))
+    medicine_cat -= 1  # to align input with list
     while 0 > medicine_cat or medicine_cat > (len(medicine_cats)-1):
         medicine_cat = inputNumber("Please select one of the available medicine cats: ")
         medicine_cat -= 1
     medicine_cat = medicine_cats[medicine_cat]
     print("Great! You've chosen " + medicine_cat + "!")
+    # should modify the below code to a txt file for expansion
     if medicine_cat == 'Leafpool':
         leafpool = plt.imread(LEAFPOOL)
         show_image(leafpool, medicine_cat)
@@ -50,6 +48,7 @@ def main():
     input("Press Enter To Continue:")
     inventory = [0, 0, 0, 0]
     healed_cats = 0
+    # while loop to display options until goal of 3 healed cats is reached
     while healed_cats <= 2:
         print("\nYou have healed " + str(healed_cats) + " Warriors!\n")
         display_choices(medicine_cat)
@@ -72,6 +71,7 @@ def main():
     print("You've healed all of the injured Warriors! You are a fantastic Medicine Cat!")
     cprint(figlet_format('YOU WIN!', font='standard'), 'yellow', attrs=['bold'])
 
+
 def display_introduction():
     print("This is a game of the book series WARRIORS! Written by Erin Hunter. The goal of this game is to heal\n"
           "three warrior cats. You are a medicine cat, a healer in the clan, who take care of the warriors, the cats\n"
@@ -90,12 +90,14 @@ def display_choices(medicine_cat):
     print("1. Show inventory \n2. Forage for medicine \n3. Heal an injured warrior")
 
 
+# simple display of inventory list
 def show_inventory(inventory):
     forageable_items = make_file_list(FORAGEABLE_ITEMS)
     for i in range(len(forageable_items)):
         print(forageable_items[i],  inventory[i])
 
 
+# forage function that takes in inventory list and modifies it
 def forage(inventory):
     forageable_items = make_file_list(FORAGEABLE_ITEMS)
     forageable_locations = make_file_list(FORAGEABLE_LOCATIONS)
@@ -109,6 +111,7 @@ def forage(inventory):
     while True:
         print("You search " + forageable_locations[selected_medicine] + " for " + forageable_items[selected_medicine])
         forageable_image = 'images/' + forageable_items[selected_medicine] + '.jpg'
+        # coin flip for result returns either 0 or 1, converts bit to boolean
         random_bit = random.getrandbits(1)
         random_choice = bool(random_bit)
         if random_choice:
@@ -122,6 +125,8 @@ def forage(inventory):
             return inventory
 
 
+# heal warrior function takes in inventory list and healed_cats variable. result of healing injured warrior deducts from
+# inventory and adds to healed_cats
 def heal_warriors(inventory, healed_cats):
     warriors = make_file_list(INJURED_WARRIORS)
     injuries = make_file_list(INJURIES)
@@ -130,7 +135,6 @@ def heal_warriors(inventory, healed_cats):
     warrior_image = 'images/' + selected_warrior + '.jpg'
     selected_injury = random.choice(injuries)
     selected_injury_index = injuries.index(selected_injury)
-    # print(selected_injury_index)
     print(colored(selected_warrior, 'blue') + " has come to you with a " + colored(selected_injury, 'red') + "! What do you do?")
     if inventory[selected_injury_index] == 0:
         print(colored("You don't have enough medicine", 'red'), "to heal " + selected_warrior +
@@ -145,6 +149,7 @@ def heal_warriors(inventory, healed_cats):
     return healed_cats
 
 
+# returns error if input is not an int, redirects to input message
 def inputNumber(message):
   while True:
     try:
@@ -157,6 +162,7 @@ def inputNumber(message):
        break
 
 
+# image input and display using matplotlib
 def show_image(filename, image_title):
     plt.figure(num=image_title)  # set canvas title
     plt.tick_params(
@@ -172,6 +178,7 @@ def show_image(filename, image_title):
     plt.close()  # close image
 
 
+# opens txt file and creates list
 def make_file_list(FILE_NAME):
     file_list = []
     file = open(FILE_NAME)
